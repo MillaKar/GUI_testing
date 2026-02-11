@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Converter</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            /* vaakakeskus */
+            align-items: center;
+            /* pystykeskus */
+        }
+
+        /* Kontti, joka pitää sisällön */
+        .container {
+            width: 400px;
+            /* kiinteä leveys */
+            margin: 30px;
+        }
+
+        /* Otsikko */
+        h1 {
+            color: #0d47a1;
+            text-align: center;
+            /* otsikko keskelle */
+            margin-bottom: 20px;
+        }
+
+        /* Laatikot */
+        .box {
+            background: white;
+            padding: 18px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            /* erottaa laatikot toisistaan */
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+            width: 100%;
+            /* täyttää vain containerin leveyden */
+            box-sizing: border-box;
+        }
+
+        /* Inputit */
+        input {
+            width: 80px;
+            padding: 6px;
+            margin: 4px;
+            border-radius: 6px;
+            border: 1px solid #90caf9;
+            font-size: 14px;
+        }
+
+        #hexInput {
+            width: 140px;
+            /* hex-input pidempi */
+        }
+
+        /* Buttonit */
+        button {
+            background: #1976d2;
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        button:hover {
+            background: #1565c0;
+        }
+
+        /* Tulosteksti */
+        p {
+            margin-top: 12px;
+            font-weight: bold;
+            color: #0d47a1;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Color Converter</h1>
+    <div class="container">
+        <!-- HEX TO RGB-->
+        <div class="box">
+            <h2>RBG</h2>
+            <input id="hexInput" type="text" placeholder="FF0000">
+            <button onclick="hexToRgb()">Convert</button>
+            <p id="hexResult"></p>
+        </div>
+
+        <div class="box">
+            <h2>RGB to Hex</h2>
+            R <input id="r" type="number" min="0" max="255">
+            G <input id="g" type="number" min="0" max="255">
+            B <input id="b" type="number" min="0" max="255">
+            <button onclick="rgbToHex()">Convert</button>
+            <p id="rgbResult"></p>
+        </div>
+    </div>
+
+    <script>
+        async function hexToRgb() {
+            const hex = document.getElementById("hexInput").value;
+
+            const res = await fetch(`http://localhost:3000/api/hex-to-rgb?hex=${hex}`);
+            const data = await res.json();
+
+            if (res.ok) {
+                document.getElementById("hexResult").innerText =
+                    `RGB: ${data.rgb.r}, ${data.rgb.g}, ${data.rgb.b}`;
+            } else {
+                document.getElementById("hexResult").innerText = data.error;
+            }
+        }
+
+        async function rgbToHex() {
+            const r = document.getElementById("r").value;
+            const g = document.getElementById("g").value;
+            const b = document.getElementById("b").value;
+
+            // Simple local conversion (allowed by assignment)
+            const hex =
+                Number(r).toString(16).padStart(2, "0") +
+                Number(g).toString(16).padStart(2, "0") +
+                Number(b).toString(16).padStart(2, "0");
+
+            document.getElementById("rgbResult").innerText = `Hex: ${hex.toUpperCase()}`;
+        }
+    </script>
+</body>
+
+</html>
