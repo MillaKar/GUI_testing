@@ -21,13 +21,10 @@ Example test:
 
 HEX input: FF0000  
 
-Expected result:  
-255, 0, 0  
+Expected result: 255, 0, 0  
 
-RGB input:  
-0, 255, 0  
-Expected result:  
-00FF00  
+RGB input: 0, 255, 0  
+Expected result: 00FF00  
 ## How to run
 
 1.) Install backend dependencies:
